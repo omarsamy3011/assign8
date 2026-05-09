@@ -1,0 +1,67 @@
+1) db.createCollection('books',{
+    validator: { $jsonSchema: { bsonType: "object", required: ["title"] } 
+
+2) db.authors.insertOne({ name: "J.K. Rowling", nationality: "British" });
+
+3) db.createCollection("logs", { 
+  capped: true, 
+  size: 1000 
+})
+
+4) db.books.createIndex({title:1})
+
+5) db.books.insertOne({what i want to insert})
+
+6) db.books.insertMany(data,{ordered:true})
+
+7) db.logs.insertOne(data)
+
+8) db.books.updateOne({title:"Future"},{
+        $set :{year:2022}
+    })
+
+9) db.books.findOne({title:title})
+
+10) db.books.find({year:{$lte:Number(to) , $gte:Number(from)}}).toArray()
+
+11) db.books.find({genres:{$in:[`${genre}`]}}).toArray()
+
+12) db.books.find({}).skip(2).limit(3).toArray()
+
+13) db.books.find({year:{$type:"int"}}).toArray()
+
+14) db.books.find({genres:{$nin:['Horror','science fiction']}}).toArray()
+
+15) db.books.find({year:{$lt:Number(y)}}).toArray()
+
+16) db.books.aggregate([
+        {$match:{year:{$gt:2000}}},
+        {$sort:{year:-1}}
+    ]).toArray()
+
+17) db.books.aggregate([
+        {$match:{year:{$gt:2000}}},
+        { $project:{
+            title:1,
+            author:1,
+            year:1
+        }}
+    ]).toArray()
+
+18) db.books.aggregate([
+        {$unwind: "$genres"},
+        {$project:{
+            title:1,
+            genres:1,
+            _id:0
+        }}
+    ]).toArray()
+
+19) db.logs.aggregate([
+        {$lookup: {
+            from : "books",
+            localField:"book_id",
+            foreignField:"_id",
+            as : "info"
+        }}
+    ]).toArray()
